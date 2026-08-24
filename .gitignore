@@ -1,0 +1,25 @@
+# Secrets — never commit these.
+.env
+.env.*
+!.env.example
+Keys.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Local agent tooling — not part of the project.
+.claude/
+.gstack/
+.agents/
+
+# Internal working docs - not part of the public project.
+claude_code_build_brief.md
+CLAUDE.md

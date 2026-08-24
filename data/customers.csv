@@ -1,0 +1,16 @@
+id,name,phone,email,segment,ltv_tier
+69f14021-b47a-4cd4-bb76-15b426294fda,Pooja Reddy,+918051802512,customer1@example.com,b2b_invoice,low
+13435751-8560-4e08-8cf4-a2d752343040,Manoj Iyer,+917338444264,customer10@example.com,b2b_invoice,low
+c3526aa7-30af-45cb-9237-b1f5d4f63821,Arjun Rao,+918553210608,customer11@example.com,b2b_invoice,low
+10fb33aa-0e86-4bdd-b2d7-bdfee5c39611,Priya Sharma,+919840104345,customer12@example.com,b2b_invoice,low
+d79e49f8-c0c7-4cb3-845f-dc2c0c3a59b0,Priya Gupta,+917433797840,customer13@example.com,b2c_subscription,mid
+1c6de6f0-670c-4c9b-96a0-efa0af24f5c1,Arjun Nair,+917698594025,customer14@example.com,b2c_subscription,low
+b8ddb598-2fa3-4a1f-aabb-4efd7f3a561d,Arjun Reddy,+919935814872,customer15@example.com,b2c_subscription,low
+a1420933-ec3b-4796-ad27-7b6e5f54e848,Priya Kumar,+917373399426,customer2@example.com,b2c_subscription,low
+fb7205d6-11a5-4c56-b2ad-d10568d7a41f,Rohan Verma,+917939042955,customer3@example.com,b2b_invoice,mid
+9180d49c-fa70-4087-9096-3015c0760630,Rohan Kumar,+917854001193,customer4@example.com,b2c_subscription,mid
+2192d463-d92e-4cca-b6c4-a47633223b83,Rahul Iyer,+917946785248,customer5@example.com,b2b_invoice,mid
+6fe454b7-d70e-4f64-9bec-e8f49d731f50,Sanjay Sharma,+917685731524,customer6@example.com,b2c_subscription,mid
+aa28a145-eab9-4710-9fa3-3999254736ea,Vikram Patel,+917924765563,customer7@example.com,b2b_invoice,mid
+1a0f97a0-26bc-4ece-90ed-f3f66aa9175f,Karan Verma,+918541804686,customer8@example.com,b2c_subscription,low
+8d2188ab-76f6-40bb-bde2-cfc605c5de1b,Sanjay Sharma,+918973214822,customer9@example.com,b2c_subscription,mid

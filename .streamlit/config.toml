@@ -1,0 +1,130 @@
+# Theme for the Revenue Recovery Agent dashboard.
+#
+# Design system: DESIGN.md at the repo root. Read it before changing anything
+# here. The constitution is one sentence: every rupee traces to a rule you can
+# read. If a change makes the mechanism harder to read, it is wrong.
+#
+# Direction: "Forensic Ledger". Warm paper, ink chrome, and exactly one
+# saturated colour, which means money. A document that proves something, not a
+# dashboard that sells something.
+#
+# THE COLOUR LAW
+#     green  = rupees that actually came back. Never a button, never a generic
+#              success state, never a chart series that is not money.
+#     red    = revenue lost, or a send that failed.
+#     amber  = a stopping rule refused to act.
+#     ink    = everything else, including every button.
+# There is no blue in this product. Blue is category camouflage: Razorpay,
+# Growfin and Churnkey are all blue-led, and ink makes the one green unmissable.
+#
+# Every value below is contrast-checked against both surfaces it sits on by
+# test_agent.py, which fails if any pair drops below the bar — and against the
+# darkest pixel the page texture can produce (#F0EEE9), not just the flat page
+# token, because widgets sit on the texture rather than on a white card.
+# Tightest margin in the system is +0.17 on the control border.
+#
+# Two warmer grounds were rejected on measurement, not taste:
+#     #F6F1E8  muted 4.48:1, green 4.42:1   both under the 4.5 bar
+#     #EDE7D9  border #D6CDB8 at 1.28:1     badly under the 3:1 non-text bar
+# The ground was lightened until every semantic colour cleared.
+
+[theme]
+base = "light"
+
+primaryColor = "#1B2430"             # ink. Buttons are ink, never green, never
+                                     # blue. Green is reserved for money, so it
+                                     # can mean exactly one thing.
+backgroundColor = "#FAF8F3"          # warm paper, not cool slate
+secondaryBackgroundColor = "#FFFFFF" # cards, widgets, table headers
+codeBackgroundColor = "#FFFFFF"      # rules sit on white paper against the warm
+                                     # page, so each rule reads as a document
+textColor = "#14181F"                # ink: 16.77:1 page, 17.79:1 card
+linkColor = "#1B2430"                # ink, so links need the underline below
+codeTextColor = "#14181F"
+
+linkUnderline = true                 # links are ink, so colour cannot carry
+                                     # them on its own
+
+# Control boundaries: inputs, selects, buttons, bordered containers. You must
+# perceive these to operate the widget, so they clear the 3:1 non-text bar
+# (WCAG 1.4.11): 3.47:1 on the page, 3.68:1 on cards.
+borderColor = "#8A8578"
+
+showWidgetBorder = true
+showSidebarBorder = false
+baseRadius = "4px"                   # ledgers have corners, apps have pills
+buttonRadius = "4px"
+
+# Serif argues, sans explains, mono is evidence.
+#
+# Fraunces on an audited figure reads as statement, not startup metric. Every
+# competitor in this category sets numbers in sans, so this is the loudest
+# differentiator in the system.
+font = "'Source Sans 3':https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap"
+headingFont = "'Fraunces':https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+
+baseFontSize = 16
+baseFontWeight = 400
+
+# h1 is reserved for the single money figure. h2 opens a section, h3 a
+# sub-section. The hero pairs h1 against a rule set in code type, and the two
+# are meant to carry roughly equal ink.
+headingFontSizes = ["44px", "24px", "18px", "16px", "14px", "13px"]
+headingFontWeights = [600, 600, 600, 600, 600, 600]
+
+# THE RULE MECHANISM.
+#
+# codeFontSize is independent of baseFontSize and headingFontSizes, which is
+# what makes the inversion buildable with no CSS injection: a rule rendered
+# through st.code() is larger than body text, equal to h3, and arrives with a
+# copy button attached. A judge can lift the reasoning straight off the screen.
+#
+# Consequence: an inline markdown backtick inherits this size too, so backticks
+# are banned in caption text. Identifiers in prose are set in bold instead, and
+# st.code() is reserved for rule statements. See DESIGN.md.
+codeFontSize = "19px"
+codeFontWeight = 500
+
+# Semantic colours. Green and red carry meaning, so everywhere they appear also
+# carries a word or an icon, never colour alone.
+greenColor = "#166534"               # recovered money, and nothing else
+redColor = "#B91C1C"                 # revenue lost
+yellowColor = "#92400E"              # a stopping rule refused
+orangeColor = "#92400E"
+blueColor = "#1B2430"                # mapped to ink on purpose: nothing in this
+                                     # product is allowed to render blue
+violetColor = "#6D28D9"
+grayColor = "#5B6470"                # muted: 5.65:1 page, 6.00:1 card
+
+# Ink-led, with no green anywhere in the series: green labels recovered money on
+# this page, so it must never label a category.
+chartCategoricalColors = [
+    "#1B2430",
+    "#6D28D9",
+    "#0E7490",
+    "#92400E",
+    "#B91C1C",
+    "#475569",
+    "#831843",
+]
+
+# The one place green is allowed to scale, because what it encodes here is the
+# magnitude of money itself, not a category.
+chartSequentialColors = [
+    "#F4F7F4",
+    "#DCE9E0",
+    "#BBD6C4",
+    "#8FBFA0",
+    "#5EA57B",
+    "#3B9160",
+    "#15803D",
+    "#136A34",
+    "#10552B",
+    "#0B3E20",
+]
+
+# Table gridlines are decorative rules, not control boundaries, so they stay
+# quiet and let dense data read cleanly.
+dataframeBorderColor = "#D9D4C7"
+dataframeHeaderBackgroundColor = "#F3F0E8"

@@ -1,0 +1,11 @@
+# Core — needed to run the pipeline and the dashboard.
+supabase>=2.0
+python-dotenv>=1.0
+streamlit>=1.36
+pandas>=2.0
+requests>=2.31
+
+# Only needed if you set DRY_RUN=false and send real WhatsApp messages.
+# Everything works without it while DRY_RUN=true (the default), because the
+# Twilio client is imported lazily, inside the live code path only.
+twilio>=9.0
