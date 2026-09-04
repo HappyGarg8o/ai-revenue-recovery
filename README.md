@@ -20,6 +20,30 @@ recovers **₹4,941 for ₹24.35 of outreach** — before a human contacts anyon
 
 ---
 
+---
+
+## Try it without installing anything
+
+**Live dashboard:** _<paste your Streamlit Cloud URL here>_
+
+Nothing to install, no account, no keys. That is the intended way to look at
+this project.
+
+If you want to verify the decision logic on your own machine, it takes two
+commands and **no database and no credentials**:
+
+```bash
+pip install -r requirements.txt
+python decision_engine.py     # the full seven-rule engine, off the bundled CSVs
+python test_agent.py          # 56 tests, none of them need credentials
+```
+
+`decision_engine.py` prints a tier and a one-sentence reason for all 40
+payments. That is the whole claim of this project, verifiable in 30 seconds.
+
+The full install below is only needed if you want the live dashboard and the
+audit trail running against your own database.
+
 ## Contents
 
 - [How it works](#how-it-works)

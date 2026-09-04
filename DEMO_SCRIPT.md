@@ -1,261 +1,198 @@
-# Demo Script — AI Revenue Recovery Agent
+# Pitch Video Script — AI Revenue Recovery Agent
 
-Razorpay Buildathon 2026, Track 3. Three minutes, two windows, one number
-that moves live.
+Razorpay Buildathon 2026, Track 3. **2 minutes 35 seconds.** Two shots:
+a terminal and a browser.
 
-**The one-line thesis:** *we don't just flag revenue at risk — we recover a
-measured amount of it, and every rupee traces back to a rule you can read.*
+**The thesis, said once at the top and once at the bottom:**
+*we don't just flag revenue at risk — we recover a measured amount of it, and
+every rupee traces back to a rule you can read.*
 
 ---
 
-## Pre-flight (do this 2 minutes before you present)
+## Before you record
 
-```bash
-cd "D:\Project\AI Revenue"
-python reset_demo.py --yes          # back to round zero
-python run_pipeline.py              # ~45s — let it finish BEFORE you present
+```powershell
+# 1. Supabase must be awake. Free projects pause after ~a week idle.
+python setup_database.py --check      # all four [ok] lines, or restore it first
+
+# 2. Back to round zero, then one clean round.
+python reset_demo.py --yes
+python run_pipeline.py                # ~45s — let it FINISH before recording
+
+# 3. Dashboard in a second window.
 python -m streamlit run dashboard.py
 ```
 
-Then set up:
+Then:
 
-- **Window A** — terminal, scrolled back to the top of the pipeline output.
-- **Window B** — browser on the dashboard, already loaded.
-- Confirm the header says `DRY_RUN=true`. Say so out loud early; it is a
-  strength, not an apology.
+- **Terminal** — scrolled back to the top of the pipeline output. Font size up.
+- **Browser** — dashboard loaded, zoomed so the masthead and the money figure
+  are both visible without scrolling. Hide bookmarks bar.
+- Confirm the badge top-right reads **Dry run**.
 
-> Run the pipeline **before** you present, not during. The audit trail is
-> the deliverable — you want it already populated so you can scroll it.
+**Record the pipeline output, don't run it live.** 45 seconds of scrolling logs
+is 30% of your video.
 
-**Numbers you should have memorised** (deterministic — same after every reset):
+### Numbers after a clean reset — memorise these
 
 | | |
 |---|---|
-| Transactions in batch | **40** |
+| Payments in batch | **40** |
 | At risk | **₹67,382** |
 | Tier split | **6** auto-retry · **31** WhatsApp · **3** voice |
-| Recovered before any human contact | **₹4,941** (2 txns, 5.0%) |
-| Audit rows | **82** |
-| Total outreach cost | **₹24.35** |
+| Recovered, no human contact | **₹4,941** |
+| Recovery rate | **5.0%** count · **7.3%** by value |
+| Outreach cost | **₹24.35** → **203×** return |
 
-Promise-to-pay dates are generated 2–7 days from *today*, so don't memorise
-those — just read whatever is on screen.
-
----
-
-## The run — 3 minutes
-
-### [0:00 – 0:20] The problem — *Window A, top of output*
-
-> **SAY:** "This is a batch of 40 failed payments — ₹67,382 at risk. Today a
-> merchant either writes that off, or pays a call centre to chase all 40 the
-> same way. Both are wrong."
-
-> **POINT AT:** the `Total at risk: Rs 67,382.26` line.
-
-> **SAY:** "Our agent diagnoses each one and picks the cheapest intervention
-> that will actually work."
+Promise-to-pay dates are generated 2–7 days from *today*, so read them off
+screen rather than memorising.
 
 ---
 
-### [0:20 – 0:50] The decision — *scroll the Stage 1 output*
+## The script
 
-> **POINT AT:** the right-hand reason column.
+### [0:00 – 0:15] · Terminal, top of output
 
-> **SAY:** "Every line here has a one-sentence reason. Not a confidence
-> score — a rule. *Retryable failure, first attempt: silent retry, no
-> contact.* *B2B invoice, high value: needs a human touch.*"
+> "Forty failed payments. **₹67,382** at risk.
+>
+> Today a merchant either writes that off, or pays a call centre to chase all
+> forty exactly the same way. Both are wrong — a phone call costs more than a
+> ₹200 subscription is worth."
 
-> **SAY:** "We deliberately did **not** use a model for this. Seven ordered
-> rules, first match wins. When a judge — or a compliance officer, or an
-> angry customer — asks *why did you call me*, there is exactly one line to
-> point at. A black box can't do that."
-
-> **SAY:** "Result: 6 silent retries, 31 WhatsApp nudges, 3 voice calls.
-> Cost-ordered — it only escalates when the rule says the cheap tier won't
-> do."
+**On screen:** the `Total at risk: Rs 67,382.26` line.
 
 ---
 
-### [0:50 – 1:20] Money recovered before anyone was contacted — *Stage 2*
+### [0:15 – 0:40] · Terminal, scroll Stage 1 slowly
 
-> **POINT AT:** the two `CAPTURED` lines in the auto_retry stage.
+> "Our agent reads each failure and picks the cheapest action that will
+> actually work. Every line here carries its reason.
+>
+> *Retryable failure, first attempt — silent retry, no contact.*
+> *B2B invoice, high value — needs a human touch.*
+>
+> That's not a confidence score. It's a rule. Seven of them, checked in order,
+> first match wins. When a compliance officer asks *why did you call me*, there
+> is exactly one line to point at."
 
-> **SAY:** "Tier one is a silent gateway retry. No message, no call, costs
-> nothing. Two of the six cleared on re-presentment — that's **₹4,941
-> recovered before we contacted a single customer.**"
-
-> **SAY:** "That is the whole argument for tiering. The free tier goes
-> first, always."
-
----
-
-### [1:20 – 1:45] The expensive tier earns its cost — *Stage 4*
-
-> **POINT AT:** the three `promise to pay captured for <date>` lines.
-
-> **SAY:** "Three high-value B2B invoices got a Hinglish voice call. What
-> comes back is not a transcript — it's structured JSON: did they commit,
-> what date, what's the reason for delay. That date is written straight to
-> the database as a follow-up commitment."
-
-> **SAY:** "*Awaiting invoice approval.* *Salary credit pending.* That's a
-> collections queue for next week, generated by the agent."
+**On screen:** the reason column on the right. Let two or three lines land.
 
 ---
 
-### [1:45 – 2:20] The number moves — *switch to Window B*
+### [0:40 – 1:00] · Terminal, Stage 2
 
-> **POINT AT:** the five metric cards across the top.
+> "Tier one is a silent gateway retry. No message, no call, costs nothing.
+> Two of six cleared on re-presentment.
+>
+> That's **₹4,941 recovered before we contacted a single customer.**"
 
-> **SAY:** "₹67,382 at risk. 40 interventions fired. ₹4,941 recovered —
-> 5% of the batch, and the outreach cost us ₹24. That's a 200x return card
-> right there."
-
-> **DO:** On the **Overview** tab, scroll to **Simulate a customer paying**.
-> Click **Mark paid** on the top row (`65c9e2e1 · ₹4,650 · Priya Gupta`).
-
-> **SAY:** "Customer pays the link. In production this is a Razorpay
-> `payment.captured` webhook — same function, `mark_recovered`."
-
-> **POINT AT:** the toast confirming which tier got the credit, then the
-> metrics, now **₹9,591** and **7.5%**.
-
-> **SAY:** "Recovery rate moves live. And notice the audit trail just gained
-> a `payment_recovered` row that credits the **WhatsApp** tier — so we know
-> which channel earned the money, not just that money arrived."
+**On screen:** the two `CAPTURED` lines.
 
 ---
 
-### [2:20 – 2:50] The compliance story — *scroll down*
+### [1:00 – 1:20] · Terminal, Stage 4
 
-> **DO:** Click the **How it decides** tab.
+> "Only three payments were worth a phone call. Those got a Hinglish voice
+> agent running a promise-to-pay script.
+>
+> What comes back isn't a transcript — it's structured JSON. Did they commit,
+> what date, what's the reason for delay. That date goes straight into the
+> database as a follow-up."
 
-> **SAY:** "All seven rules, in order, and the stopping rules underneath."
-
-> **POINT AT:** the **Stopping rules** card.
-
-> **SAY:** "Max three contact attempts — and silent retries don't count,
-> because they never reach the customer. Calls only 9am to 9pm.
-> Fraud-flagged transactions get no automated contact at all. And the one
-> that matters most: **we re-check whether the customer already paid
-> immediately before firing**, not just when we decided — because those are
-> different moments."
-
-> **DO:** Click the **Audit trail** tab. Type a payment id into the search box
-> to show one payment's whole life. Then click **Blocked** in the filter to
-> show only the interventions a rule refused to fire.
-
-> **SAY:** "Append-only. Every decision, every send, every rule that
-> *refused* to send, every rupee. Exportable as CSV. Refusing to act is as
-> auditable as acting."
+**On screen:** the three `promise to pay captured for <date>` lines.
+Read one reason aloud — *awaiting invoice approval* — it lands well.
 
 ---
 
-### [2:50 – 3:00] Close
+### [1:20 – 1:50] · Switch to the browser · **the key moment**
 
-> **SAY:** "Detection is the easy half. This is a decision engine with real
-> logged outcomes: ₹9,591 recovered on a ₹67,382 batch, for ₹24 of outreach,
-> with every action traceable to one line of rule. Run it four times and the
-> three-attempt cap shuts it down on its own."
+Start at the top of the page.
 
----
+> "One screen. The rule on the left, the money on the right, deliberately at
+> the same weight — the number is the consequence, the rule is the decision.
+>
+> ₹4,941 recovered. Five percent of the batch. Cost of outreach: **₹24**."
 
-## If they ask "how does it actually work?" — the 60-second version
+**Scroll to "Simulate a customer paying".** Pick the top row —
+`65c9e2e1 · ₹4,650 · Priya Gupta`. **Click "Mark as paid".**
 
-```
-failed transaction
-      |
-      v
-decide_tier()            7 ordered rules -> tier + one-sentence reason,
-      |                  both written to audit_log
-      v
-interventions row        outcome: pending
-      |
-      v
-stopping_rules.check()   re-read the transaction NOW, not at decision time:
-      |                  already paid? 3 attempts used? outside call window?
-      v
-channel executor         auto_retry | whatsapp | voice_call
-      |                  every one gated behind DRY_RUN
-      v
-audit_log                what was sent — or which rule blocked it
-      |
-      v
-mark_recovered()         transaction -> recovered,
-                         credit the tier that earned it
-```
+> "Customer pays the link. In production that's a Razorpay `payment.captured`
+> webhook — same function."
 
-Six Python modules, one Postgres schema, one Streamlit page. No model, no
-queue, no orchestration framework — a judge can read the whole decision path
-in about ten minutes.
+**Scroll back up.** The figure now reads **₹9,591**, rate **7.5%**, by value
+**14.2%**.
 
-The one design decision worth calling out: **the stopping rules run twice.**
-Once when the tier is chosen, and again immediately before anything fires.
-Those are different moments, and between them a customer may have paid. The
-second check is what stops you texting someone who already settled.
+> "The number moves live. And the audit trail just credited the **WhatsApp**
+> tier — so we know which channel earned the money, not just that it arrived."
 
 ---
 
-## Anticipated questions
+### [1:50 – 2:20] · Keep scrolling
 
-**"Is this real or simulated?"**
-> "The sends are simulated, deliberately, and every simulated row is stamped
-> `simulated: true` in its audit payload — you can filter for it. The reason
-> is that Twilio gates WhatsApp Content Templates behind a paid account
-> upgrade; we confirmed that by live testing, not by guessing. Rather than
-> let a KYC queue decide whether our demo works, we put every channel behind
-> one flag. The live API code is complete — set `DRY_RUN=false` with
-> verified credentials and the same functions send for real. Nothing else
-> changes."
+**"How it decides"** — pause on the seven-rule table.
 
-**"Why not a model?"**
-> "Because the deliverable is a defensible decision, not a marginally more
-> accurate one. Seven rules a compliance team can review beat a model that's
-> two points better and can't explain itself. If we had ten million
-> transactions we'd tune the thresholds — the rules table is exactly where
-> that plugs in."
+> "The whole engine. No model, no black box."
 
-**"What stops it from harassing customers?"**
-> "Four things, and all four are visible in the audit log: three-attempt
-> cap, 9-to-9 calling window, no automated contact on fraud-flagged
-> transactions, and a re-check that the customer hasn't already paid — done
-> at execution time, not decision time. Run the pipeline four times and it
-> stops contacting anyone on its own."
+**"The rules that stop it"** — pause here, this is the compliance beat.
 
-**"Is the recovery rate honest?"**
-> "Two of the three recoveries are simulated gateway captures — flagged as
-> such in the audit trail. The third is the one I marked by hand just now,
-> which is exactly what a webhook would do. And note the view reports rate by
-> transaction count; the dashboard shows the value-weighted rate next to it,
-> because the two differ."
+> "Three contact attempts, maximum — and silent retries don't count, because
+> they never reach the customer. Calls only between nine and nine.
+> Fraud-flagged payments get no automated contact at all.
+>
+> And the one that matters most: we re-check whether the customer already paid
+> **immediately before firing**, not just when we decided. Those are different
+> moments."
 
-**"What would you build next?"**
-> "The real `payment.captured` webhook listener — `mark_recovered()` is
-> already the exact function it would call. Then A/B the WhatsApp copy, since
-> that's 31 of our 40 interventions and we already have the audit trail to
-> measure it."
+**"Audit trail"** — in the **Show** filter, tick **Blocked by a rule**.
+
+> "Append-only. Every decision, every send, and every time a rule *refused* to
+> send. Refusing to act is as auditable as acting."
 
 ---
 
-## If something breaks
+### [2:20 – 2:35] · Close
 
-| Problem | Do this |
+> "Detection is the easy half. This is a decision engine with logged outcomes:
+> **₹9,591 recovered on a ₹67,382 batch, for ₹24 of outreach**, every action
+> traceable to one line of rule.
+>
+> Run it four times and the three-attempt cap shuts it down on its own."
+
+---
+
+## Two things to say if you have 15 spare seconds
+
+**On dry run** — say it before a judge asks:
+
+> "Sends are simulated, deliberately. Twilio gates WhatsApp templates behind a
+> paid upgrade, so rather than let a KYC queue decide whether our demo works,
+> every channel sits behind one flag. The live code is complete — flip
+> `DRY_RUN=false` and it sends for real. Every simulated row is stamped
+> `simulated: true`."
+
+**On verifiability** — strong closer if the repo is on screen:
+
+> "Clone it and run `python test_agent.py`. Fifty-six tests, no credentials
+> needed. You can verify the rules without asking us for anything."
+
+---
+
+## If something breaks mid-take
+
+| Problem | Do |
 |---|---|
-| Dashboard blank or stale | Hit **Refresh data** in the sidebar. It caches for 15s. |
-| Theme looks wrong / unstyled | `.streamlit/config.toml` only loads at startup — restart Streamlit (Ctrl+C, then `python -m streamlit run dashboard.py`). Code changes hot-reload; the theme does not. |
-| Dark theme washes out on the projector | In `.streamlit/config.toml` set `base = "light"`, `backgroundColor = "#FFFFFF"`, `secondaryBackgroundColor = "#F8FAFC"`, `textColor = "#0F172A"`, `borderColor = "#E2E8F0"`, then restart. |
-| Pipeline says "already decided" | That's the idempotency guard. Run `python reset_demo.py --yes` first. |
-| Voice tier shows 0 calls | You're outside the 9am–9pm window — that's the stopping rule working. **Say that out loud**; it's a better demo than the call. |
-| Numbers don't match this script | Someone ran a second round. `python reset_demo.py --yes` then `python run_pipeline.py`. |
-| Supabase unreachable | `python decision_engine.py` with no env vars runs the whole rules engine against the local CSVs. Talk through that instead. |
+| `getaddrinfo failed` | Supabase project is paused. Restore it in the dashboard. |
+| Dashboard stale | **Refresh now** at the bottom. Caches for 15s. |
+| Voice tier shows 0 calls | You're outside 9am–9pm. **Say it out loud** — the stopping rule working is a better demo than the call. |
+| Numbers don't match | Someone ran a second round. `reset_demo.py --yes` then `run_pipeline.py`. |
+| No database at all | `python decision_engine.py` runs the full rules engine off the CSVs, no Supabase. Narrate that instead. |
 
 ---
 
-## Do not say
+## Don't say
 
 | Don't | Do |
 |---|---|
-| "It's just a demo" | "Every channel is behind one flag, by design." |
-| "We didn't have time to..." | "That's the next thing we'd build." |
-| "The AI decides..." | "The rules decide. That's the point." |
+| "It's just a demo" | "Every channel sits behind one flag, by design." |
+| "We didn't have time to…" | "That's the next thing we'd build." |
+| "The AI decides…" | "The rules decide. That's the point." |

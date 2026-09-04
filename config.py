@@ -28,17 +28,35 @@ except ImportError:  # python-dotenv is optional — env vars alone are fine
 _FALSEY = {"false", "0", "no", "off", ""}
 
 
+def _get(name, default=None):
+    """Env var, else st.secrets, else default.
+
+    Streamlit Community Cloud has no .env — secrets are pasted into the
+    deploy dialog and surface through st.secrets. Reading both means the
+    same code runs locally and hosted with no branch.
+    """
+    value = os.environ.get(name)
+    if value:
+        return value
+    try:
+        import streamlit as st
+
+        return st.secrets.get(name, default)
+    except Exception:  # noqa: BLE001 — not a Streamlit run, or no secrets file
+        return default
+
+
 def _flag(name, default="true"):
     """Env var -> bool. Anything not explicitly falsey counts as true."""
-    return os.environ.get(name, default).strip().lower() not in _FALSEY
+    return str(_get(name, default)).strip().lower() not in _FALSEY
 
 
 # --- The design constraint ---------------------------------------------------
 DRY_RUN = _flag("DRY_RUN", "true")
 
 # --- Supabase ----------------------------------------------------------------
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+SUPABASE_URL = _get("SUPABASE_URL")
+SUPABASE_KEY = _get("SUPABASE_KEY")
 
 # --- WhatsApp (Twilio) -------------------------------------------------------
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
