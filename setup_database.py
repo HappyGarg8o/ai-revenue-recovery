@@ -50,19 +50,57 @@ def _fail(msg):
     print(f"  [FAIL]  {msg}")
 
 
+def _ask_and_write_env():
+    """No credentials and a real terminal? Ask, and write .env ourselves.
+    Editing a dotfile by hand is the step people get stuck on."""
+    if not sys.stdin.isatty():
+        return False
+    if os.path.exists(".env"):
+        return False
+
+    print("""
+  No .env yet. Paste two values from your Supabase dashboard
+  (Project Settings -> API) and this will write the file for you.
+  Press Enter on either to skip.
+""")
+    try:
+        url = input("  Project URL  (https://xxxx.supabase.co) : ").strip()
+        key = input("  Secret key   (sb_secret_... or eyJ...)  : ").strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        return False
+
+    if not url or not key:
+        return False
+
+    with io.open(".env", "w", encoding="utf-8") as f:
+        f.write(f"SUPABASE_URL={url}\nSUPABASE_KEY={key}\nDRY_RUN=true\n")
+
+    os.environ["SUPABASE_URL"] = url
+    os.environ["SUPABASE_KEY"] = key
+    _ok("wrote .env")
+    return True
+
+
 def check_credentials():
     url = os.environ.get("SUPABASE_URL")
     key = os.environ.get("SUPABASE_KEY")
 
     if not url or not key:
-        _fail("SUPABASE_URL / SUPABASE_KEY are not set.")
-        print("""
-        Fix it like this:
-          1. cp .env.example .env
-          2. Open .env and paste in your project URL and service_role key,
-             both from  Supabase dashboard -> Project Settings -> API
+        if _ask_and_write_env():
+            url, key = os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"]
+        else:
+            _fail("SUPABASE_URL / SUPABASE_KEY are not set.")
+            print("""
+        Create a file named  .env  next to this script containing:
+
+            SUPABASE_URL=https://your-project.supabase.co
+            SUPABASE_KEY=your-secret-key
+
+        Both values are in your Supabase dashboard under
+        Project Settings -> API.
         """)
-        return None
+            return None
 
     if not url.startswith("https://"):
         _fail(f"SUPABASE_URL looks wrong: {url!r} (expected https://...supabase.co)")

@@ -214,57 +214,38 @@ pip install -r requirements.txt
    - the **Project URL** (`https://xxxx.supabase.co`)
    - the **`service_role`** key — *not* the `anon` key
 
-### 3. Add your credentials
+### 3. Create the tables
 
-```bash
-cp .env.example .env
-```
-
-Open `.env` and fill in the two values:
-
-```
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_KEY=eyJhbGci...
-```
-
-Leave everything else as it is. `DRY_RUN=true` is what keeps the project from
-needing any other account.
-
-> `.env` is gitignored. Never commit it — the `service_role` key bypasses
-> row-level security and grants full access to your database.
-
-### 4. Create the tables
-
-This is the one manual step. Supabase's API does not accept schema changes, so
-the tables have to be created from the dashboard:
+Supabase's API does not accept schema changes, so this one step is manual:
 
 1. Open your project → **SQL Editor** → **New query**
 2. Paste the entire contents of [`schema.sql`](schema.sql)
 3. Press **Run**
 
-That creates four tables (`customers`, `transactions`, `interventions`,
-`audit_log`) and the `recovery_metrics` view.
+That creates four tables and the `recovery_metrics` view.
 
-### 5. Load the sample batch
+### 4. Run setup — it asks for your keys
 
 ```bash
 python setup_database.py
 ```
 
-Verifies your credentials, checks all four tables exist, and loads 15 customers
-and 40 failed payments. If anything is missing it tells you exactly what to
-fix. Use `--check` to verify without changing anything.
+It prompts for your **Project URL** and **secret key** (both from Project
+Settings → API), writes `.env` for you, verifies the tables, and loads 15
+customers and 40 failed payments. No file editing needed.
 
-### 6. Run it
+> `.env` is gitignored. Never commit it.
+
+### 5. Run it
 
 ```bash
 python run_pipeline.py
 ```
 
 Decides a tier for all 40 payments, then executes all three tiers in dry run.
-Takes about 45 seconds.
+About 45 seconds.
 
-### 7. Open the dashboard
+### 6. Open the dashboard
 
 ```bash
 python -m streamlit run dashboard.py
