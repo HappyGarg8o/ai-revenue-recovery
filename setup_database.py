@@ -234,9 +234,22 @@ def main(argv):
         _ok("connected to Supabase")
     except Exception as e:  # noqa: BLE001
         msg = str(e)
-        if "Invalid API key" in msg or "JWT" in msg:
-            _fail("connected, but the key was rejected. Check you copied the "
-                  "service_role key (not anon) and that it is complete.")
+        if "401" in msg or "Invalid API key" in msg or "JWT" in msg:
+            key = os.environ.get("SUPABASE_KEY", "")
+            _fail("reached Supabase, but the key was rejected (401).")
+            if key.startswith("sb_publishable_"):
+                print("\n        That is the PUBLISHABLE key — it cannot read your "
+                      "tables.\n        Use the SECRET key (sb_secret_...) from "
+                      "Project Settings -> API.")
+            elif key.startswith("eyJ"):
+                print("\n        That is a legacy anon/service_role key. If you have "
+                      "disabled\n        legacy keys, create a secret key "
+                      "(sb_secret_...) and use that.")
+            else:
+                print("\n        Use the SECRET key (sb_secret_...) from Project "
+                      "Settings -> API,\n        and check the whole value was "
+                      "copied.")
+            print("\n        Then:  rm .env  and run this script again.\n")
             return 1
         # a missing table is fine here; check_tables reports it properly
         if "does not exist" not in msg and "PGRST205" not in msg:
